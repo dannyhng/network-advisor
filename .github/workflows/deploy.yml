@@ -17,14 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ADD THIS STEP HERE TO UPGRADE THE "FIRMWARE"
-      - name: Setup Node.js v22
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
       - name: Install, build, and upload with Astro
         uses: withastro/action@v3
+        with:
+          node-version: 24 # Using the same "High Power" version as your portfolio
 
   deploy:
     needs: build
