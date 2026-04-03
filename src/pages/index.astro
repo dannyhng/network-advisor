@@ -383,17 +383,32 @@ const haWarning = (r.ha === 'yes' && r.budget !== 'high')
       </div>`;
 
     // Storage
+    // 4. STORAGE & DATA LAYER
+    const storageCard = document.getElementById('storage-card');
     if (types.includes('servers') || types.includes('cameras')) {
-      document.getElementById('storage-card').style.display = 'block';
-      let s = "";
-      if (types.includes('cameras')) s += `<strong>NVR:</strong> WD Purple (24/7 Series)<br/>`;
-      if (types.includes('servers')) s += `<strong>NAS:</strong> Seagate IronWolf (RAID Rated)<br/>`;
+      storageCard.style.display = 'block';
+      let sHtml = "";
+      
+      if (types.includes('cameras')) {
+        sHtml += `<strong>Security Storage:</strong> WD Purple Series<br/>
+                  <p style="font-size:0.8rem; margin-top:5px; margin-bottom:10px;">
+                    Built to record video 24/7 without stopping or failing.
+                  </p>`;
+      }
+      
+      if (types.includes('servers')) {
+        sHtml += `<strong>File/Server Storage:</strong> Seagate IronWolf<br/>
+                  <p style="font-size:0.8rem; margin-top:5px;">
+                    Optimized for opening and saving files quickly across multiple devices.
+                  </p>`;
+      }
+      
       document.getElementById('res-storage').innerHTML = `
-  ${s}
-  <div class="exp-box">
-    <strong>Note:</strong> Drive choice depends on workload (24/7 writes vs mixed usage).
-  </div>
-`;
+        ${sHtml}
+        <div class="exp-box" style="font-size: 0.75rem; border-color: var(--border);">
+          <strong>Architect's Tip:</strong> Using standard desktop drives in these systems often leads to data loss. We spec "NAS" or "Surveillance" grade drives for 24/7 reliability.
+        </div>
+      `;
     }
 
     // "Why it Works" (Dynamic)
