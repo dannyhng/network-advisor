@@ -237,16 +237,51 @@ import Layout from '../layouts/Layout.astro';
 
   /* Mobile Adjustments */
   .cta-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  /* Final Mobile Polish */
   @media (max-width: 768px) {
-    .advisor-hero { padding: 2rem 1rem; min-height: 30vh; }
-    .advisor-shell { padding: 1.5rem; margin: 1rem auto; width: 95%; } /* Removed negative margin */
-    .blueprint-grid { grid-template-columns: 1fr; }
-    .blueprint-actions, .cta-links { flex-direction: column; } /* Stacks both sets of buttons */
-    .btn-primary, .btn-outline { width: 100%; }
-    #blueprint-title { font-size: 1.4rem; }
+    .advisor-hero { padding: 1.5rem 1rem; min-height: 20vh; }
     
-    /* Make the summary bar items smaller and stacked on mobile */
-    #selection-summary div { font-size: 0.75rem; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+    /* This fix prevents the results from jumping under the navbar */
+    .advisor-shell { 
+      padding: 1rem; 
+      margin: 1rem auto 4rem !important; /* Forces a clean margin */
+      width: 96% !important;
+      border-radius: 8px;
+    }
+
+    /* Stack the blueprint cards vertically */
+    .blueprint-grid { 
+      grid-template-columns: 1fr !important; 
+      gap: 0.8rem !important; 
+    }
+
+    .blueprint-card { padding: 1rem !important; }
+
+    /* Fix for the Selection Summary (Receipt) */
+    #selection-summary {
+      padding: 0.8rem !important;
+      margin-bottom: 1rem !important;
+    }
+
+    #selection-summary > div {
+      font-size: 0.75rem !important;
+      padding: 4px 0;
+    }
+
+    /* Stacks all buttons: Actions and Contact CTA */
+    .blueprint-actions, .cta-links { 
+      flex-direction: column !important; 
+      gap: 0.8rem !important;
+    }
+
+    .btn-primary, .btn-outline { 
+      width: 100% !important; 
+      padding: 1rem !important;
+      font-size: 0.95rem !important;
+    }
+
+    #blueprint-title { font-size: 1.4rem !important; line-height: 1.2; }
+    .advisor-hero h1 { font-size: 2rem !important; }
   }
 
 </style>
