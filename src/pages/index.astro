@@ -14,15 +14,9 @@ import Layout from '../layouts/Layout.astro';
 
   <main>
     <div class="advisor-hero">
-      <p class="advisor-label">Systems Architect Tool</p>
+      <p class="advisor-label">Systems Architecture Tool</p>
       <h1>Network <span class="highlight">Blueprint</span> Advisor</h1>
-      <p class="advisor-sub">Professional-grade infrastructure recommendations based on your specific requirements and budget.</p>
-      
-      <div class="hero-status">
-        <span class="status-meta">Infrastructure Planning</span>
-        <span class="status-meta" style="margin: 0 10px;">|</span>
-        <span class="status-meta">v2.5 Platinum</span>
-    </div>
+      <p class="advisor-sub">Generate secure, scalable network designs based on your environment, workload, and budget.</p>
     </div>
 
     <div class="advisor-shell">
@@ -32,15 +26,15 @@ import Layout from '../layouts/Layout.astro';
 
       <div id="questions-container">
         <div class="question active" data-q="0">
-          <div class="q-header"><span class="q-num">START</span><h2>Build your network roadmap.</h2></div>
-          <p class="q-sub">Standard routers often fail under professional workloads. Answer 5 questions about your environment, and we'll design a secure, enterprise-grade blueprint tailored to your budget.</p>
+          <div class="q-header"><span class="q-num">START</span><h2>Design your network architecture.</h2></div>
+          <p class="q-sub">Most consumer routers aren’t designed for complex environments. Answer 5 questions to generate a structured, secure network blueprint.</p>
           <div class="exp-box">
             <strong>What we’ll cover:</strong>
-            <ul style="margin-top: 10px; padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6;">
-              <li><strong>Hardware Picks:</strong> Recommendations for your specific budget.</li>
-              <li><strong>Security Zones:</strong> How to keep IoT and guest devices isolated.</li>
-              <li><strong>L3 Routing & VPN:</strong> Professional protocols and remote access.</li>
-              <li><strong>Setup Guide:</strong> A step-by-step roadmap to get you online.</li>
+            <ul style="margin-top: 10px; padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+              <li><strong>Hardware Picks:</strong> Recommendations aligned with your budget</li>
+              <li><strong>Security Zones:</strong> Segmentation strategies for IoT and guest systems</li>
+              <li><strong>L3 Routing & VPN:</strong> Practical routing design and remote access</li>
+              <li><strong>Setup Guide:</strong> A step-by-step implementation roadmap</li>
             </ul>
           </div>
           <button class="next-btn" onclick="nextQuestion()" style="margin-top: 2rem;">Start the Assessment →</button>
@@ -48,23 +42,21 @@ import Layout from '../layouts/Layout.astro';
 
         <div class="question" data-q="1">
           <div class="q-header"><span class="q-num">01</span><h2>Primary Objective</h2></div>
-          <p class="q-sub">What is the main purpose of this infrastructure?</p>
           <div class="options-grid">
             <button class="option-card" data-key="audience" data-val="home" onclick="select(this)">
-              <div class="card-title">Residential</div><p>Reliable connectivity for family and daily use.</p>
+              <div class="card-title">Home Network</div><p>Reliable connectivity for family and daily use.</p>
             </button>
             <button class="option-card" data-key="audience" data-val="business" onclick="select(this)">
-              <div class="card-title">SMB / Enterprise</div><p>Security, uptime, and client-facing performance.</p>
+              <div class="card-title">Business Network</div><p>Security, uptime, and client-facing performance.</p>
             </button>
             <button class="option-card" data-key="audience" data-val="homelab" onclick="select(this)">
-              <div class="card-title">Homelab / R&D</div><p>Experimentation, self-hosting, and skill development.</p>
+              <div class="card-title">Homelab</div><p>Experimentation, self-hosting, and skill development.</p>
             </button>
           </div>
         </div>
 
         <div class="question" data-q="2">
           <div class="q-header"><span class="q-num">02</span><h2>Hardware Budget</h2></div>
-          <p class="q-sub">What is your estimated hardware expenditure?</p>
           <div class="options-grid">
             <button class="option-card" data-key="budget" data-val="low" onclick="select(this)">
               <div class="card-title">Budget (&lt;$200)</div><p>Refurbished enterprise gear or consumer hardware.</p>
@@ -80,7 +72,6 @@ import Layout from '../layouts/Layout.astro';
 
         <div class="question" data-q="3">
           <div class="q-header"><span class="q-num">03</span><h2>Network Density</h2></div>
-          <p class="q-sub">How many total endpoints (wired + wireless)?</p>
           <div class="options-grid">
             <button class="option-card" data-key="density" data-val="small" onclick="select(this)"><div class="card-title">1 - 20 Devices</div></button>
             <button class="option-card" data-key="density" data-val="medium" onclick="select(this)"><div class="card-title">21 - 60 Devices</div></button>
@@ -97,9 +88,7 @@ import Layout from '../layouts/Layout.astro';
             <button class="option-card multi-btn" data-key="types" data-val="guest" onclick="toggleMulti(this)"><div class="card-title">Guest Access</div></button>
           </div>
           <button class="next-btn" id="multi-next" onclick="nextFromMulti()" style="display:none; margin-top: 1.5rem;">Generate Architecture →</button>
-		  <button class="btn-outline" onclick="skipMulti()" style="margin-top: 0.8rem; width: 100%;">
-  Standard Profile (Skip) →
-</button>
+          <button class="btn-outline" onclick="skipMulti()" style="margin-top: 0.8rem; width: 100%;">Standard Profile (Skip) →</button>
         </div>
 
         <div class="question" data-q="5">
@@ -120,34 +109,31 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <div id="results" class="results-container" style="display:none">
-        <div id="selection-summary" style="background: rgba(16, 185, 129, 0.05); border: 1px dashed var(--accent); padding: 12px 20px; border-radius: 6px; margin-bottom: 2rem; font-family: monospace; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.5px;"></div>
+        <div id="selection-summary"></div>
 
         <div class="results-top">
-          <div class="badge">Blueprint Generated</div>
           <h2 id="blueprint-title">System Architecture Spec</h2>
           <p id="blueprint-desc" style="color: var(--text-secondary); margin: 10px 0;"></p>
           <div class="cost-estimate">Estimated Hardware Cost: <span id="final-cost">--</span></div>
         </div>
 
         <div class="blueprint-grid">
-          <div class="blueprint-card"><h3>01 // Hardware Stack</h3><div id="res-hardware" class="res-content"></div></div>
-          <div class="blueprint-card"><h3>02 // Logical Topology</h3><div id="res-routing" class="res-content"></div></div>
-          <div class="blueprint-card"><h3>03 // Routing Strategy</h3><div id="res-protocol" class="res-content"></div></div>
-          <div class="blueprint-card"><h3>04 // Remote Access</h3><div id="res-remote" class="res-content"></div></div>
-          <div class="blueprint-card"><h3>05 // Security Zones</h3><div id="res-vlan" class="res-content"></div></div>
-          <div class="blueprint-card"><h3>06 // Deployment Roadmap</h3><div id="res-security" class="res-content"></div></div>
-          
-          <div class="blueprint-card" id="storage-card" style="display:none">
-             <h3>07 // Storage & Data Layer</h3><div id="res-storage" class="res-content"></div>
-          </div>
-
+          <div class="blueprint-card"><h3>Hardware Stack</h3><div id="res-hardware" class="res-content"></div></div>
+          <div class="blueprint-card"><h3>Logical Topology</h3><div id="res-routing" class="res-content"></div></div>
+          <div class="blueprint-card"><h3>Routing Strategy</h3><div id="res-protocol" class="res-content"></div></div>
+          <div class="blueprint-card"><h3>Remote Access</h3><div id="res-remote" class="res-content"></div></div>
+          <div class="blueprint-card"><h3>Security Zones</h3><div id="res-vlan" class="res-content"></div></div>
+          <div class="blueprint-card"><h3>Deployment Roadmap</h3><div id="res-security" class="res-content"></div></div>
+          <div class="blueprint-card" id="storage-card" style="display:none"><h3>Storage Layer</h3><div id="res-storage" class="res-content"></div></div>
+		  <div class="blueprint-card" id="software-card" style="display:none"><h3>Software Stack</h3><div id="res-software" class="res-content"></div></div>
           <div class="blueprint-card" id="logic-card" style="grid-column: 1 / -1; border-top: 2px solid var(--accent); margin-top: 1rem;">
-             <h3>08 // Why this design works</h3><div id="res-logic" class="res-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;"></div>
+             <h3>Why this design works</h3><div id="res-logic" class="res-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;"></div>
           </div>
         </div>
         
         <div class="blueprint-actions">
            <button class="btn-primary" onclick="downloadPDF()">Download PDF</button>
+           <button class="btn-outline" onclick="exportMarkdown()">Copy Markdown</button>
            <button class="btn-outline" onclick="saveResults()">Save Blueprint</button>
            <button class="btn-outline" onclick="location.reload()">Start New Blueprint</button>
         </div>
@@ -166,135 +152,67 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <style>
-  :root { 
-    --bg-deep: #0f172a; 
-    --bg-card: #1e293b; 
-    --accent: #10b981; 
-    --accent-glow: rgba(16, 185, 129, 0.2); 
-    --text-primary: #f8fafc; 
-    --text-secondary: #94a3b8; 
-    --border: #334155; 
-  }
-  
-  body { background: var(--bg-deep); color: var(--text-primary); font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
+  :root { --bg-deep: #0f172a; --bg-card: #1e293b; --accent: #10b981; --accent-glow: rgba(16, 185, 129, 0.2); --text-primary: #f8fafc; --text-secondary: #94a3b8; --border: #334155; }
+  body { background: var(--bg-deep); color: var(--text-primary); font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; font-size: 16px; }
   main { display: flex; flex-direction: column; align-items: center; width: 100%; }
   
-  /* Navbar */
   .navbar { width: 100%; border-bottom: 1px solid var(--border); padding: 1rem 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; }
   .nav-container { max-width: 1100px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem; }
   .nav-logo { font-weight: 800; font-size: 1.2rem; text-decoration: none; color: white; letter-spacing: -1px; }
   .dot { color: var(--accent); }
-  .console { color: var(--accent); animation: blink 1s infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
   .nav-btn { border: 1px solid var(--accent); color: var(--accent) !important; padding: 0.4rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.85rem; }
 
-  /* Hero Section */
-  .advisor-hero { text-align: center; min-height: 40vh; display: flex; flex-direction: column; justify-content: center; padding: 4rem 1.5rem 6rem; }
-  .advisor-label { color: var(--accent); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
+  .advisor-hero { text-align: center; min-height: 45vh; display: flex; flex-direction: column; justify-content: center; padding: 4rem 1.5rem 8rem; }
+  .advisor-label { color: var(--accent); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
   .advisor-hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0; letter-spacing: -2px; line-height: 1.1; }
   .highlight { color: var(--accent); }
   .advisor-sub { color: var(--text-secondary); max-width: 600px; margin: 1rem auto; line-height: 1.6; font-size: 1.1rem; }
-  .hero-status { display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; font-family: monospace; font-size: 0.7rem; }
 
-  /* Main Shell */
-  .advisor-shell { width: 92%; max-width: 950px; margin: -4rem auto 6rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 3rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); box-sizing: border-box; }
-  .progress-container { background: var(--border); height: 4px; border-radius: 2px; margin-bottom: 3rem; overflow: hidden; }
+  .advisor-shell { width: 92%; max-width: 950px; margin: -5rem auto 6rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 3rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative; z-index: 10; }
+  .progress-container { background: var(--border); height: 4px; border-radius: 2px; margin-bottom: 3.5rem; overflow: hidden; }
   .progress-bar { background: var(--accent); height: 100%; width: 0%; transition: 0.4s; }
 
-  /* Questions */
   .question { display: none; }
   .question.active { display: block; animation: slideUp 0.4s ease-out; }
   @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .q-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
   .q-num { font-family: monospace; color: var(--accent); font-size: 1.1rem; font-weight: bold; }
   .question h2 { font-size: 1.6rem; margin: 0; font-weight: 700; }
-  .q-sub { color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
+  .q-sub { color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6; }
+  .option-card p { font-size: 0.95rem; line-height: 1.5; margin-top: 0.4rem; color: var(--text-secondary); }
 
-  /* Options */
   .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
-  .option-card { background: #0f172a; border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; text-align: left; cursor: pointer; transition: 0.2s; color: var(--text-primary); width: 100%; box-sizing: border-box; }
+  .option-card { background: #0f172a; border: 1px solid var(--border); padding: 1.2rem; border-radius: 8px; text-align: left; cursor: pointer; transition: 0.2s; color: var(--text-primary); }
   .option-card:hover { border-color: var(--accent); background: #1e293b; }
   .option-card.selected { border-color: var(--accent); background: var(--accent-glow); }
   .card-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
   .next-btn { margin-top: 2rem; background: var(--accent); color: var(--bg-deep); border: none; padding: 1rem; border-radius: 6px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.2s; }
-  .next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .next-btn:hover { opacity: 0.9; }
 
-  /* Results Grid */
-  .results-top { border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem; }
-  .badge { display: inline-block; background: var(--accent-glow); color: var(--accent); font-size: 0.65rem; font-weight: 800; padding: 4px 12px; border-radius: 99px; text-transform: uppercase; margin-bottom: 1rem; border: 1px solid var(--accent); }
-  .cost-estimate { display: inline-block; background: var(--accent-glow); color: var(--accent); padding: 0.5rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.9rem; }
-  .blueprint-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
-  .blueprint-card { background: #0f172a; border-left: 3px solid var(--accent); padding: 1.2rem; border-radius: 4px; }
-  .blueprint-card h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin: 0 0 0.8rem; }
-  .res-content { font-size: 0.85rem; line-height: 1.6; color: var(--text-secondary); }
-  .res-content strong { color: white; }
-  .exp-box { background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 4px; margin-top: 1rem; font-size: 0.75rem; border: 1px dashed var(--border); line-height: 1.5; }
+  .blueprint-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .blueprint-card { background: #0f172a; border-left: 3px solid var(--accent); padding: 1.8rem; border-radius: 4px; }
+  .blueprint-card h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin: 0 0 1rem; }
+  .res-content { font-size: 1rem; line-height: 1.6; color: var(--text-secondary); }
+  .exp-box { background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 4px; margin-top: 1rem; font-size: 0.9rem; border: 1px dashed var(--border); line-height: 1.6; }
 
-  /* Buttons */
-  .blueprint-actions { margin-top: 3rem; display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary { background: var(--accent); color: var(--bg-deep); border: none; padding: 0.8rem 1.5rem; border-radius: 4px; font-weight: 700; cursor: pointer; text-decoration: none; flex: 1; text-align: center; font-size: 0.9rem; }
-  .btn-outline { background: transparent; border: 1px solid var(--border); color: white; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; text-decoration: none; transition: 0.2s; flex: 1; text-align: center; font-size: 0.9rem; }
+  .blueprint-actions { margin-top: 3rem; display: flex; gap: 1rem; }
+  .btn-primary, .btn-outline { padding: 0.9rem 1.8rem; border-radius: 4px; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; font-size: 0.9rem; transition: 0.2s; }
+  .btn-primary { background: var(--accent); color: var(--bg-deep); border: none; flex: 1.5; }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: white; flex: 1; }
 
-  /* Mobile Adjustments */
   .cta-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
-  /* Final Mobile Polish - v2.5.2 */
+  .topology-simple { text-align: center; margin-top: 1.5rem; }
+  .top-section { background: #020617; border: 1px solid var(--accent); padding: 0.8rem; border-radius: 6px; margin: 0.5rem auto; width: fit-content; color: white; font-weight: bold; }
+  .arrow { color: var(--accent); margin: 0.3rem 0; font-weight: bold; }
+
   @media (max-width: 768px) {
-    .advisor-hero { 
-      padding: 1.5rem 1rem !important; 
-      min-height: auto !important; 
-    }
-    
-    .advisor-shell { 
-      width: 94% !important;
-      margin: 1.5rem auto !important; /* Forces it away from the navbar */
-      padding: 1.2rem !important;
-      border-radius: 8px !important;
-    }
-
-    #blueprint-title { 
-      font-size: 1.3rem !important; 
-      line-height: 1.3 !important; 
-      margin-top: 0.5rem !important;
-    }
-
-    /* Summary Bar: Clean 2-column layout for small screens */
-    #selection-summary {
-      display: grid !important;
-      grid-template-columns: 1fr 1fr !important;
-      gap: 0.6rem !important;
-      padding: 0.8rem !important;
-      margin-bottom: 1.2rem !important;
-    }
-
-    #selection-summary > div {
-      font-size: 0.7rem !important;
-      border: none !important;
-      padding: 0 !important;
-    }
-
-    /* Stack everything else vertically */
-    .blueprint-grid { 
-      grid-template-columns: 1fr !important; 
-      gap: 1rem !important; 
-    }
-
-    .blueprint-card { padding: 1rem !important; }
-
-    .blueprint-actions, .cta-links { 
-      flex-direction: column !important; 
-      gap: 0.8rem !important;
-      width: 100% !important;
-    }
-
-    .btn-primary, .btn-outline { 
-      width: 100% !important; 
-      display: block !important;
-      box-sizing: border-box !important;
-    }
-
-    .cost-estimate { font-size: 0.8rem !important; width: 100%; box-sizing: border-box; }
+    .advisor-hero h1 { font-size: 2.2rem; }
+    .advisor-hero { padding: 3rem 1.5rem; min-height: auto; }
+    .advisor-shell { padding: 1.5rem; margin: 1rem auto 4rem; width: 95%; }
+    .blueprint-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .blueprint-actions, .cta-links { flex-direction: column; width: 100%; }
+    .btn-primary, .btn-outline { width: 100%; flex: none; }
   }
-
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -306,12 +224,14 @@ import Layout from '../layouts/Layout.astro';
   let currentQ = 0;
   const totalQ = 5;
 
-  // Persist Data Logic
   const saved = localStorage.getItem('networkBlueprint');
-  if (saved) {
-  Object.assign(answers, JSON.parse(saved));
-  // Do NOT auto-show results
-}
+	if (saved) {
+	try {
+		Object.assign(answers, JSON.parse(saved));
+	} catch (e) {
+		localStorage.removeItem('networkBlueprint');
+	}
+	}
 
   window.select = function(btn) {
     const key = btn.dataset.key;
@@ -331,13 +251,15 @@ import Layout from '../layouts/Layout.astro';
 
   window.nextFromMulti = function() {
     answers['types'] = Array.from(multiSelections);
+	multiSelections.clear();
     nextQuestion();
   }
 
   window.skipMulti = function() {
-  answers['types'] = [];
-  nextQuestion();
-}
+	multiSelections.clear();
+    answers['types'] = [];
+    nextQuestion();
+  }
 
   function nextQuestion() {
     if (currentQ >= totalQ) { showResults(); return; }
@@ -356,203 +278,258 @@ import Layout from '../layouts/Layout.astro';
   }
 
   function updateNavUI() {
-    const progress = currentQ === 0 ? 0 : (currentQ / totalQ) * 100;
+    const progress = (currentQ / totalQ) * 100;
     document.getElementById('progress-bar').style.width = progress + '%';
     document.getElementById('prev-btn').style.visibility = currentQ > 0 ? 'visible' : 'hidden';
   }
 
   window.saveResults = function() {
     localStorage.setItem('networkBlueprint', JSON.stringify(answers));
-    alert('Blueprint locally cached for session persistence.');
+    alert('Blueprint locally cached for your next session.');
   }
 
   function showResults() {
-	document.querySelector('.advisor-hero').style.display = 'none'; 
-    document.getElementById('questions-container').style.display = 'none';
-    document.querySelector('.progress-container').style.display = 'none';
+    // 1. UI Transitions
+    const hero = document.querySelector('.advisor-hero');
+    const shell = document.querySelector('.advisor-shell');
+    const container = document.getElementById('questions-container');
+    const progress = document.querySelector('.progress-container');
+    const summaryBar = document.getElementById('selection-summary');
+	const r = answers;
+
+	// Guard clause (prevents crashes / bad states)
+	if (!r.audience || !r.budget || !r.density || !r.ha) {
+	alert("Incomplete input. Please restart the assessment.");
+	location.reload();
+	return;
+	}
+
+    if (hero) hero.style.display = 'none'; 
+    container.style.display = 'none';
+    progress.style.display = 'none';
     
-    const r = answers;
+    // 2. Responsive Layout Reset
+    if (window.innerWidth > 768) {
+      shell.style.marginTop = "4rem";
+      shell.style.padding = "3rem";
+    } else {
+      shell.style.marginTop = "1.5rem";
+      shell.style.padding = "1.2rem";
+    }
+
     const types = r.types || [];
-    const isLab = r.audience === 'homelab';
     const isBiz = r.audience === 'business';
+    const isLab = r.audience === 'homelab';
     const hasHA = r.ha === 'yes' && r.budget === 'high';
 
-const haWarning = (r.ha === 'yes' && r.budget !== 'high')
-  ? `<div class="exp-box"><strong>Note:</strong> True high availability needs a higher budget. A backup (cold spare) setup is recommended instead.</div>`
-  : "";
-
-    // 1. Lean Mobile-Ready Summary
     const audienceMap = { home: 'Home', business: 'Business', homelab: 'Homelab' };
     const budgetMap = { low: '<$200', mid: '$200-$600', high: '$1k+' };
-    const densityMap = { small: '1-20', medium: '21-60', large: '61+' };
+    const densityMap = { small: '1-20 Devices', medium: '21-60 Devices', large: '61+ Devices' };
+	const costMap = {
+	low: '$150 – $450',
+	mid: '$700 – $1,500',
+	high: '$2,500 – $4,000+'
+	};
 
-    // This simplified HTML works much better with the 2-column grid CSS above
-    const sumHtml = `
-      <div><strong style="color:var(--accent)">Env:</strong> ${audienceMap[r.audience]}</div>
-      <div><strong style="color:var(--accent)">Scale:</strong> ${densityMap[r.density]}</div>
-      <div><strong style="color:var(--accent)">Budget:</strong> ${budgetMap[r.budget]}</div>
-      <div><strong style="color:var(--accent)">HA:</strong> ${hasHA ? 'Yes' : 'No'}</div>
-    `;
-    
-    const summaryBar = document.getElementById('selection-summary');
-    summaryBar.innerHTML = sumHtml;
-    
-    // Force reset the position so it's visible at the top
-    const shell = document.querySelector('.advisor-shell');
-    shell.style.marginTop = "1rem";
-    shell.style.padding = "1.5rem";
-    
-    // Style adjustments for a cleaner "Receipt" look
-    const summaryBar = document.getElementById('selection-summary');
+    // 3. The "Receipt" Summary
+    summaryBar.innerHTML = `
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.8rem; width: 100%;">
+        <div><strong style="color:var(--accent)">Env:</strong> ${audienceMap[r.audience]}</div>
+        <div><strong style="color:var(--accent)">Scale:</strong> ${densityMap[r.density]}</div>
+        <div><strong style="color:var(--accent)">Budget:</strong> ${budgetMap[r.budget]}</div>
+        <div><strong style="color:var(--accent)">HA:</strong> ${hasHA ? 'Enabled' : 'No'}</div>
+      </div>`;
     summaryBar.style.border = "1px solid var(--border)";
     summaryBar.style.background = "rgba(16, 185, 129, 0.03)";
     summaryBar.style.padding = "1rem";
-    summaryBar.style.fontFamily = "inherit"; 
-    summaryBar.style.fontSize = "0.8rem";
     summaryBar.style.marginBottom = "1.5rem";
+    summaryBar.style.fontSize = "1rem";
 
-    // IMPORTANT: Reset the margin of the shell so it's not "too high"
-    const shell = document.querySelector('.advisor-shell');
-    shell.style.marginTop = "2rem";
+    // 4. Header & Descriptive Text
+    document.querySelector('.results-top').innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:2rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; margin-bottom: 2rem;">
+        
+        <div style="flex: 1 1 300px;">
+            <div style="font-size:0.85rem; color:var(--accent); letter-spacing:1px; text-transform:uppercase; font-weight:700; margin-bottom:0.5rem;">
+                Architecture Profile
+            </div>
+            <h2 style="margin:0 0 0.5rem 0; font-size: 2rem; line-height: 1.2;">
+                ${audienceMap[r.audience]} Network Design
+            </h2>
+            <p style="color:var(--text-secondary); font-size:1.05rem; margin:0; max-width:500px; line-height: 1.6;">
+                Designed for <strong>${densityMap[r.density]}</strong> with a focus on 
+                <strong>${hasHA ? 'high availability' : 'segmentation and control'}</strong>.
+            </p>
+        </div>
 
-    // Header & Descriptive Logic
-    document.getElementById('blueprint-title').textContent = `${audienceMap[r.audience]} Specification`;
-    document.getElementById('blueprint-desc').innerHTML = `Custom multi-zone topology for <strong>${r.density} endpoints</strong>. Optimized for <strong>${hasHA ? 'high availability' : 'strong network isolation'}</strong>.`;
-    document.getElementById('final-cost').textContent = { low: '$150-$400', mid: '$600-$1,200', high: '$2,500+' }[r.budget];
+        <div style="flex: 1 1 250px; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+            <div style="font-size:0.85rem; color:var(--text-secondary); text-transform:uppercase; font-weight:600; margin-bottom:0.4rem;">
+                Estimated Cost
+            </div>
+            <div style="font-size:1.8rem; font-weight:800; color:var(--accent); line-height: 1.1; margin-bottom:0.5rem;">
+                ${costMap[r.budget]}
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin:0; line-height: 1.5;">
+                Hardware pricing varies based on vendor, licensing, and availability.
+            </p>
 
-    // Hardware
+            ${r.budget === 'high' ? `
+                <p style="font-size:0.85rem; color:var(--accent); margin:0.8rem 0 0 0; font-weight:600; border-top: 1px dashed var(--border); padding-top: 0.8rem;">
+                    Enterprise-grade hardware may include licensing costs.
+                </p>
+            ` : ''}
+        </div>
+
+    </div>
+`;
+
+    // 5. Hardware Logic
     let hw = "";
     if (r.budget === 'high') {
-  hw = `<strong>Edge:</strong> Netgate 6100 ${hasHA ? 'HA Pair' : '(Standalone)'}<br/>
-        <strong>Core:</strong> Cisco Catalyst 9200L (L3 Managed)<br/>
-        <strong>WLAN:</strong> 2x UniFi U7 Pro (Wi-Fi 7 / 6GHz)`;
-} else if (r.budget === 'mid') {
-      hw = `<strong>Gateway:</strong> UniFi Cloud Gateway Max<br/><strong>Switch:</strong> UniFi Pro Max 16 PoE<br/><strong>Wireless:</strong> 2x UniFi U7 Pro`;
+      hw = `<strong>Edge:</strong> Netgate 6100 ${hasHA ? 'HA Pair' : '(Standalone)'}<br/>
+            <strong>Core:</strong> Cisco Catalyst 9200L (L3 Managed)<br/>
+            <strong>WLAN:</strong> 2x UniFi U7 Pro (Wi-Fi 7 / 6GHz)`;
+    } else if (r.budget === 'mid') {
+      hw = `<strong>Gateway:</strong> UniFi Cloud Gateway Max<br/>
+            <strong>Switch:</strong> UniFi Pro Max 16 PoE<br/>
+            <strong>WLAN:</strong> 2x UniFi U7 Pro`;
     } else {
-      hw = `<strong>Gateway:</strong> x86 Mini PC (OPNsense)<br/><strong>Switch:</strong> TP-Link L2 Managed<br/><strong>Wireless:</strong> TP-Link Omada AP`;
+      hw = `<strong>Gateway:</strong> x86 Mini PC (OPNsense)<br/>
+            <strong>Switch:</strong> TP-Link L2 Managed<br/>
+            <strong>WLAN:</strong> TP-Link Omada AP`;
     }
-    hw += `<div class="exp-box"><strong>Interconnect:</strong> Use <strong>${r.budget === 'high'
-  ? '10Gbps SFP+ DAC (if supported)'
-  : 'Cat6 Ethernet'}</strong> for the switch-to-firewall link.</div>`;
-    document.getElementById('res-hardware').innerHTML = hw;
+    const icLink = r.budget === 'high' ? '10Gbps SFP+ DAC' : (r.budget === 'mid' ? 'Cat6a 10G Copper' : 'Cat6 Ethernet');
+    hw += `<div class="exp-box"><strong>Interconnect:</strong> Use <strong>${icLink}</strong> for the switch-to-firewall link to eliminate backplane bottlenecks.</div>`;
+    document.getElementById('res-hardware').innerHTML = hw + `
+		<div class="exp-box">
+			<strong>Note:</strong> Enterprise switching platforms may require additional licensing and support contracts.
+		</div>
+	`;
 
-    // Topology
-    document.getElementById('res-routing').innerHTML = `
-  ${haWarning}
-  <div class="topology-simple">
-    <div class="top-section"><strong>WAN EDGE</strong></div><div class="arrow">↓</div>
-    <div class="top-section"><strong>SECURITY</strong><br/>(${hasHA ? 'HA CLUSTER' : 'FIREWALL'})</div><div class="arrow">↓</div>
-    <div class="top-section"><strong>BACKBONE</strong><br/>(Tagged Trunk)</div>
-  </div>`;
-
-    // Routing Logic (New)
-    const useL3Offload = (
-  r.budget === 'high' &&
-  r.density === 'large'
-);
-    
-    document.getElementById('res-protocol').innerHTML = `
-      <strong>Method:</strong> ${useL3Offload ? 'L3 Hardware Offloading' : 'Router-on-a-Stick (RoAS)'}<br/>
-      <div class="exp-box">
-        <strong>Logic:</strong> ${useL3Offload 
-          ? 'Inter-VLAN routing is handled at the switch using SVIs, keeping the Firewall CPU free for security inspection.' 
-          : 'All inter-VLAN traffic is processed by the Gateway. Simple to manage and perfect for your current device density.'}
+    // 6. Topology Logic
+    const haWarning = (r.ha === 'yes' && r.budget !== 'high') ? `<div class="exp-box"><strong>Note:</strong> True high availability needs a higher budget. A backup (cold spare) setup is recommended instead.</div>` : "";
+    document.getElementById('res-routing').innerHTML = `${haWarning}
+      <div class="topology-simple">
+        <div class="top-section"><strong>WAN EDGE</strong></div><div class="arrow">↓</div>
+        <div class="top-section"><strong>SECURITY</strong><br/>(${hasHA ? 'HA CLUSTER' : 'FIREWALL'})</div><div class="arrow">↓</div>
+        <div class="top-section"><strong>BACKBONE</strong><br/>(802.1Q Tagged Trunk)</div>
       </div>`;
 
-    // Remote Access (New)
-    const remoteAccessNeeded = (types.includes('servers') || types.includes('cameras') || r.audience === 'business');
-    
-    document.getElementById('res-remote').innerHTML = remoteAccessNeeded
-      ? `<strong>VPN:</strong> ${
-  r.budget === 'low' 
-    ? 'Tailscale (simplest setup)' 
-    : 'WireGuard (self-hosted)'
-}<br/>
-         <p style="font-size:0.8rem; margin-top:5px;">Secure entry for off-site access to your ${types.includes('cameras') ? 'camera system' : 'internal resources'}.</p>`
-      : `<strong>Status:</strong> Internal Only<br/>
-         <p style="font-size:0.8rem; margin-top:5px;">No external ports opened. Maximum security for a local-only environment.</p>`;
+    // 7. Routing Strategy (RoAS vs L3 Offload)
+		const useL3Offload = (
+	r.budget === 'high' &&
+	r.density === 'large' &&
+	!types.includes('iot') // keep firewall in path for inspection if IoT exists
+	);
 
-    // VLANs & Security
-    let vlan = `<strong>VLAN 10:</strong> Production Zone<br/>`;
+    document.getElementById('res-protocol').innerHTML = `
+		<strong>Method:</strong> ${useL3Offload ? 'L3 Hardware Offloading' : 'Router-on-a-Stick (RoAS)'}<br/>
+		
+		<div class="exp-box">
+			<strong>Logic:</strong> ${useL3Offload 
+			? 'Internal traffic is routed at the switch level using SVIs, keeping the Firewall CPU free for security inspection.' 
+			: 'All inter-VLAN traffic is processed by the Gateway. Simple to manage and perfect for your current device density.'}
+		</div>
+
+		<div class="exp-box">
+			<strong>Tradeoff:</strong> ${useL3Offload 
+			? 'Faster internal routing, but reduced visibility at the firewall layer.' 
+			: 'Full traffic inspection at the firewall, at the cost of additional CPU load.'}
+	</div>
+	`;
+
+    // 8. Remote Access Logic
+    const remoteNeeded = (types.includes('servers') || types.includes('cameras') || isBiz);
+    document.getElementById('res-remote').innerHTML = remoteNeeded 
+      ? `<strong>VPN:</strong> ${r.budget === 'low' ? 'Tailscale (Zero-Config)' : 'WireGuard (High-Perf Kernel)'}<br/>
+         <p style="font-size:0.9rem; margin-top:5px;">Secure entry point for off-site access to your ${types.includes('cameras') ? 'camera system' : 'internal resources'}.</p>` 
+      : `<strong>Status:</strong> Internal Only<br/><p style="font-size:0.9rem; margin-top:5px;">No external ports opened. Maximum security for a local-only environment.</p>`;
+
+    // 9. Security Zones (VLANs)
+    let vlan = `<strong>VLAN 10:</strong> Trusted Production<br/>`;
     if (types.includes('iot')) vlan += `<strong>VLAN 20:</strong> IoT Sandbox (Isolated)<br/>`;
     if (types.includes('cameras')) vlan += `<strong>VLAN 30:</strong> CCTV Private (No WAN)<br/>`;
     vlan += `<strong>VLAN 99:</strong> Management Lane`;
-	vlan += `<div class="exp-box">
-  <strong>Policy:</strong> Default deny between VLANs. Only explicitly permitted traffic is allowed.
-</div>`;
-	vlan += `<div class="exp-box">
-  <strong>Enforcement:</strong> Implemented via firewall rules on the gateway (or ACLs if L3 switching is enabled).
-</div>`;
+    vlan += `<div class="exp-box"><strong>Policy:</strong> Default-Deny between zones. Only explicitly permitted traffic is allowed (Zero Trust approach).</div>`;
     document.getElementById('res-vlan').innerHTML = vlan;
 
+    // 10. Roadmap
     document.getElementById('res-security').innerHTML = `
-      <div class="roadmap-list">
-        <div class="roadmap-step"><strong>01:</strong> Hardware validation & cable management.</div>
-        <div class="roadmap-step"><strong>02:</strong> VLAN Database & Trunk provisioning.</div>
-        <div class="roadmap-step"><strong>03:</strong> Default-Deny Security Policy rollout.</div>
-        <div class="roadmap-step"><strong>04:</strong> Post-deployment vulnerability audit.</div>
+      <div class="roadmap-list" style="margin-top:0.5rem">
+        <div style="margin-bottom:10px"><strong>01:</strong> Hardware validation & cable management.</div>
+        <div style="margin-bottom:10px"><strong>02:</strong> VLAN Database & Trunk provisioning.</div>
+        <div style="margin-bottom:10px"><strong>03:</strong> Default-Deny Security Policy rollout.</div>
+        <div style="margin-bottom:10px"><strong>04:</strong> Post-deployment vulnerability audit (Nmap).</div>
       </div>`;
 
-    // Storage
-    // 4. STORAGE & DATA LAYER
+    // 11. Storage Layer
     const storageCard = document.getElementById('storage-card');
     if (types.includes('servers') || types.includes('cameras')) {
       storageCard.style.display = 'block';
       let sHtml = "";
-      
-      if (types.includes('cameras')) {
-        sHtml += `<strong>Security Storage:</strong> WD Purple Series<br/>
-                  <p style="font-size:0.8rem; margin-top:5px; margin-bottom:10px;">
-                    Built to record video 24/7 without stopping or failing.
-                  </p>`;
-      }
-      
-      if (types.includes('servers')) {
-        sHtml += `<strong>File/Server Storage:</strong> Seagate IronWolf<br/>
-                  <p style="font-size:0.8rem; margin-top:5px;">
-                    Optimized for opening and saving files quickly across multiple devices.
-                  </p>`;
-      }
-      
+      if (types.includes('cameras')) sHtml += `<strong>Security Storage:</strong> WD Purple Series<br/><p style="font-size:0.9rem; margin-bottom:8px;">Built for non-stop video recording (Surveillance Grade).</p>`;
+      if (types.includes('servers')) sHtml += `<strong>File Storage:</strong> Seagate IronWolf<br/><p style="font-size:0.9rem;">Optimized for frequent file access and RAID stability.</p>`;
       document.getElementById('res-storage').innerHTML = `
         ${sHtml}
-        <div class="exp-box" style="font-size: 0.75rem; border-color: var(--border);">
-          <strong>Tip:</strong> Using standard desktop drives in these systems often leads to data loss. We spec "NAS" or "Surveillance" grade drives for 24/7 reliability.
-        </div>
+        <div class="exp-box"><strong>Architect's Tip:</strong> Standard desktop drives often fail in 24/7 NAS/NVR systems. We spec high-endurance drives for data integrity.</div>
       `;
     }
 
-    // "Why it Works" (Dynamic)
-    const isHigh = r.budget === 'high';
+	// 11.5 Software Layer (Homelab Exclusive)
+    const softwareCard = document.getElementById('software-card');
+    if (isLab) {
+      softwareCard.style.display = 'block';
+      document.getElementById('res-software').innerHTML = `
+        <strong>Virtualization:</strong> Proxmox VE<br/>
+        <p style="font-size:0.9rem; margin-top:2px; margin-bottom:8px;">Bare-metal hypervisor (Type 1) for running local servers and virtualized routers.</p>
+        
+        <strong>Routing OS:</strong> pfSense / OPNsense<br/>
+        <p style="font-size:0.9rem; margin-top:2px; margin-bottom:8px;">Enterprise-grade firewalling and granular routing control.</p>
+        
+        <strong>Containers:</strong> Docker + Portainer<br/>
+        <p style="font-size:0.9rem; margin-top:2px; margin-bottom:0;">Lightweight, isolated deployment for self-hosted applications.</p>
 
-document.getElementById('res-logic').innerHTML = `
-  <div>
-    <h4 style="color:var(--accent); margin-bottom:10px;">Network Segmentation</h4>
-    <strong>Purpose:</strong>
-    <p>Separate different types of devices into their own network zones.</p>
+        <div class="exp-box"><strong>Architect's Tip:</strong> Spin up a container for <strong>NetBox</strong> to document your IPAM (IP Address Management) and rack elevations. Good documentation separates a messy lab from a professional environment.</div>
+      `;
+    } else {
+      softwareCard.style.display = 'none';
+    }
 
-    <strong>Why it matters:</strong>
-    <p>In a <strong>${audienceMap[r.audience]}</strong> setup, this keeps things like guest devices or smart home gear from accessing your main network if they get compromised.</p>
+    // 12. "Why This Works"
+    document.getElementById('res-logic').innerHTML = `
+		<div>
+			<h4 style="color:var(--accent); margin-bottom:10px;">Isolation Strategy</h4>
+			<p>
+			Untrusted devices (IoT, guest, etc.) are segmented into separate VLANs with a default-deny policy.
+			This prevents lateral movement if one device is compromised.
+			</p>
+			<div class="exp-box">
+			<strong>Tradeoff:</strong> More segmentation = more firewall rules to manage.
+			</div>
+		</div>
 
-    <strong>Result:</strong>
-    <p>If something goes wrong, it stays contained instead of spreading across your entire network.</p>
-  </div>
+		<div>
+			<h4 style="color:var(--accent); margin-bottom:10px;">Routing Design</h4>
+			<p>
+			${useL3Offload 
+				? 'Inter-VLAN traffic is handled at the switch level to reduce firewall load and improve performance.'
+				: 'All traffic passes through the firewall for inspection, prioritizing visibility and control over raw performance.'}
+			</p>
+			<div class="exp-box">
+			<strong>Tradeoff:</strong> ${useL3Offload 
+				? 'Higher performance, but less visibility at the firewall.'
+				: 'Better security visibility, but increased CPU load on the gateway.'}
+			</div>
+		</div>
+`;
 
-  <div>
-    <h4 style="color:var(--accent); margin-bottom:10px;">Hardware Efficiency</h4>
-    <strong>Purpose:</strong>
-    <p>Make sure your hardware can handle your number of devices without slowing down.</p>
-
-    <strong>Why it matters:</strong>
-    <p>${isHigh ? 'Higher-end hardware' : 'Well-optimized hardware'} can handle things like ${remoteAccessNeeded ? 'VPN traffic' : 'network filtering'} without hurting performance.</p>
-
-    <strong>Result:</strong>
-    <p>Smooth performance even under load, without random slowdowns or crashes.</p>
-  </div>`;
-
+    // 13. Final Reveal
     const res = document.getElementById('results');
     res.style.display = 'block';
-    setTimeout(() => { res.style.opacity = "1"; res.scrollIntoView({ behavior: 'smooth' }); }, 100);
+    setTimeout(() => { 
+      res.style.opacity = "1"; 
+      res.scrollIntoView({ behavior: 'smooth' }); 
+    }, 100);
   }
 
   // PDF Engine
@@ -560,17 +537,53 @@ document.getElementById('res-logic').innerHTML = `
     const { jsPDF } = window.jspdf;
     const el = document.getElementById('results');
     const actionButtons = document.querySelector('.blueprint-actions');
-    actionButtons.style.opacity = '0';
+    if (actionButtons) actionButtons.style.opacity = '0';
     try {
-      const canvas = await html2canvas(el, { backgroundColor: '#0f172a', scale: 2, useCORS: true });
+      const canvas = await html2canvas(el, { backgroundColor: '#0f172a', scale: 2 });
       const imgData = canvas.toDataURL('image/png');
       const doc = new jsPDF('p', 'mm', 'a4');
       const w = doc.internal.pageSize.getWidth();
       const h = (doc.getImageProperties(imgData).height * w) / doc.getImageProperties(imgData).width;
       doc.addImage(imgData, 'PNG', 0, 0, w, h);
-      doc.save(`Blueprint-${Date.now()}.pdf`);
+      doc.save(`Network-Blueprint-${Date.now()}.pdf`);
+    } catch (err) {
+      console.error("PDF Export failed:", err);
     } finally {
-      actionButtons.style.opacity = '1';
+      if (actionButtons) actionButtons.style.opacity = '1';
     }
-  }
+  };
+
+  // Markdown Export Engine
+  window.exportMarkdown = function() {
+    const r = answers;
+    const isLab = r.audience === 'homelab';
+    const hasHA = r.ha === 'yes' && r.budget === 'high';
+    
+    // Build the Markdown string
+    let md = `### 🏗️ Network Architecture Spec: ${r.audience.toUpperCase()}\n\n`;
+    md += `**Scale:** ${r.density} | **Budget:** ${r.budget} | **High Availability:** ${hasHA ? 'Enabled' : 'Standard'}\n\n`;
+    
+    // Grab text content from the rendered divs and clean up the spacing
+    const hwText = document.getElementById('res-hardware').innerText.replace(/\n\n/g, '\n');
+    const vlanText = document.getElementById('res-vlan').innerText.replace(/\n\n/g, '\n');
+    
+    md += `#### 💻 Hardware Stack\n${hwText}\n\n`;
+    md += `#### 🛡️ Security Zones\n${vlanText}\n\n`;
+    
+    if (isLab) {
+        const swText = document.getElementById('res-software').innerText.replace(/\n\n/g, '\n');
+        md += `#### 💽 Software Stack\n${swText}\n\n`;
+    }
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(md).then(() => {
+        alert("Markdown copied to clipboard! Ready to paste into Reddit, Discord, or GitHub.");
+    }).catch(err => {
+        console.error("Failed to copy text: ", err);
+        alert("Clipboard access denied. Please copy manually.");
+    });
+  };
+  
+  updateNavUI();
+
 </script>
