@@ -98,7 +98,7 @@ import Layout from '../layouts/Layout.astro';
           </div>
           <button class="next-btn" id="multi-next" onclick="nextFromMulti()" style="display:none; margin-top: 1.5rem;">Generate Architecture →</button>
 		  <button class="btn-outline" onclick="skipMulti()" style="margin-top: 0.8rem; width: 100%;">
-  Skip →
+  Standard Profile (Skip) →
 </button>
         </div>
 
@@ -126,7 +126,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="badge">Blueprint Generated</div>
           <h2 id="blueprint-title">System Architecture Spec</h2>
           <p id="blueprint-desc" style="color: var(--text-secondary); margin: 10px 0;"></p>
-          <div class="cost-estimate">Est. Capex: <span id="final-cost">--</span></div>
+          <div class="cost-estimate">Estimated Hardware Cost: <span id="final-cost">--</span></div>
         </div>
 
         <div class="blueprint-grid">
@@ -149,7 +149,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="blueprint-actions">
            <button class="btn-primary" onclick="downloadPDF()">Download PDF</button>
            <button class="btn-outline" onclick="saveResults()">Save Blueprint</button>
-           <button class="btn-outline" onclick="location.reload()">Reset Architect</button>
+           <button class="btn-outline" onclick="location.reload()">Start New Blueprint</button>
         </div>
 
         <div class="contact-cta">
@@ -236,17 +236,19 @@ import Layout from '../layouts/Layout.astro';
   .btn-outline { background: transparent; border: 1px solid var(--border); color: white; padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; text-decoration: none; transition: 0.2s; flex: 1; text-align: center; font-size: 0.9rem; }
 
   /* Mobile Adjustments */
+  .cta-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
   @media (max-width: 768px) {
-    .advisor-hero h1 { font-size: 2.2rem; }
-    .advisor-sub { font-size: 1rem; }
-    .advisor-shell { padding: 1.5rem; margin-top: -2rem; width: 95%; }
+    .advisor-hero { padding: 2rem 1rem; min-height: 30vh; }
+    .advisor-shell { padding: 1.5rem; margin: 1rem auto; width: 95%; } /* Removed negative margin */
     .blueprint-grid { grid-template-columns: 1fr; }
-    .blueprint-actions { flex-direction: column; }
-    .btn-primary, .btn-outline { width: 100%; flex: none; }
-    .nav-links { display: none; } /* Keeps navbar clean on mobile */
-    .q-header h2 { font-size: 1.4rem; }
-    .hero-status { flex-direction: column; align-items: center; gap: 0.5rem; }
+    .blueprint-actions, .cta-links { flex-direction: column; } /* Stacks both sets of buttons */
+    .btn-primary, .btn-outline { width: 100%; }
+    #blueprint-title { font-size: 1.4rem; }
+    
+    /* Make the summary bar items smaller and stacked on mobile */
+    #selection-summary div { font-size: 0.75rem; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
   }
+
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -319,6 +321,7 @@ import Layout from '../layouts/Layout.astro';
   }
 
   function showResults() {
+	document.querySelector('.advisor-hero').style.display = 'none'; 
     document.getElementById('questions-container').style.display = 'none';
     document.querySelector('.progress-container').style.display = 'none';
     
@@ -333,11 +336,37 @@ const haWarning = (r.ha === 'yes' && r.budget !== 'high')
   : "";
 
     // Summary Bar
-    const sum = `[ ARCHITECT_LOG ]: TARGET_ENV=${r.audience.toUpperCase()} | BUDGET=${r.budget.toUpperCase()} | NODES=${r.density.toUpperCase()} | HA=${hasHA}`;
-    document.getElementById('selection-summary').textContent = sum;
+    // 1. Clean Selection Summary (Replaces the Architect Log)
+    // 1. Clean Selection Summary (Compact Design)
+    const audienceMap = { home: 'Residential', business: 'Enterprise/SMB', homelab: 'R&D Homelab' };
+    const budgetMap = { low: '< $200', mid: '$200 - $600', high: '$1,000+' };
+    const densityMap = { small: '1-20 Devices', medium: '21-60 Devices', large: '61+ Devices' };
+
+    // Using a simpler Grid-like layout for the summary
+    const sumHtml = `
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; width: 100%;">
+        <div><strong style="color:var(--accent)">Env:</strong> ${audienceMap[r.audience]}</div>
+        <div><strong style="color:var(--accent)">Budget:</strong> ${budgetMap[r.budget]}</div>
+        <div><strong style="color:var(--accent)">Nodes:</strong> ${densityMap[r.density]}</div>
+        <div><strong style="color:var(--accent)">HA:</strong> ${hasHA ? 'Enabled' : 'No'}</div>
+      </div>
+    `;
+    document.getElementById('selection-summary').innerHTML = sumHtml;
+    
+    // Style adjustments for a cleaner "Receipt" look
+    const summaryBar = document.getElementById('selection-summary');
+    summaryBar.style.border = "1px solid var(--border)";
+    summaryBar.style.background = "rgba(16, 185, 129, 0.03)";
+    summaryBar.style.padding = "1rem";
+    summaryBar.style.fontFamily = "inherit"; 
+    summaryBar.style.fontSize = "0.8rem";
+    summaryBar.style.marginBottom = "1.5rem";
+
+    // IMPORTANT: Reset the margin of the shell so it's not "too high"
+    const shell = document.querySelector('.advisor-shell');
+    shell.style.marginTop = "2rem";
 
     // Header & Descriptive Logic
-    const audienceMap = { home: 'Premium Residential', business: 'Enterprise/SMB', homelab: 'R&D Homelab' };
     document.getElementById('blueprint-title').textContent = `${audienceMap[r.audience]} Specification`;
     document.getElementById('blueprint-desc').innerHTML = `Custom multi-zone topology for <strong>${r.density} endpoints</strong>. Optimized for <strong>${hasHA ? 'high availability' : 'strong network isolation'}</strong>.`;
     document.getElementById('final-cost').textContent = { low: '$150-$400', mid: '$600-$1,200', high: '$2,500+' }[r.budget];
@@ -439,7 +468,7 @@ const haWarning = (r.ha === 'yes' && r.budget !== 'high')
       document.getElementById('res-storage').innerHTML = `
         ${sHtml}
         <div class="exp-box" style="font-size: 0.75rem; border-color: var(--border);">
-          <strong>Architect's Tip:</strong> Using standard desktop drives in these systems often leads to data loss. We spec "NAS" or "Surveillance" grade drives for 24/7 reliability.
+          <strong>Tip:</strong> Using standard desktop drives in these systems often leads to data loss. We spec "NAS" or "Surveillance" grade drives for 24/7 reliability.
         </div>
       `;
     }
