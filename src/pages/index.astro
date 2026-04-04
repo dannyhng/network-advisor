@@ -237,51 +237,62 @@ import Layout from '../layouts/Layout.astro';
 
   /* Mobile Adjustments */
   .cta-links { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
-  /* Final Mobile Polish */
+  /* Final Mobile Polish - v2.5.2 */
   @media (max-width: 768px) {
-    .advisor-hero { padding: 1.5rem 1rem; min-height: 20vh; }
+    .advisor-hero { 
+      padding: 1.5rem 1rem !important; 
+      min-height: auto !important; 
+    }
     
-    /* This fix prevents the results from jumping under the navbar */
     .advisor-shell { 
-      padding: 1rem; 
-      margin: 1rem auto 4rem !important; /* Forces a clean margin */
-      width: 96% !important;
-      border-radius: 8px;
+      width: 94% !important;
+      margin: 1.5rem auto !important; /* Forces it away from the navbar */
+      padding: 1.2rem !important;
+      border-radius: 8px !important;
     }
 
-    /* Stack the blueprint cards vertically */
+    #blueprint-title { 
+      font-size: 1.3rem !important; 
+      line-height: 1.3 !important; 
+      margin-top: 0.5rem !important;
+    }
+
+    /* Summary Bar: Clean 2-column layout for small screens */
+    #selection-summary {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 0.6rem !important;
+      padding: 0.8rem !important;
+      margin-bottom: 1.2rem !important;
+    }
+
+    #selection-summary > div {
+      font-size: 0.7rem !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    /* Stack everything else vertically */
     .blueprint-grid { 
       grid-template-columns: 1fr !important; 
-      gap: 0.8rem !important; 
+      gap: 1rem !important; 
     }
 
     .blueprint-card { padding: 1rem !important; }
 
-    /* Fix for the Selection Summary (Receipt) */
-    #selection-summary {
-      padding: 0.8rem !important;
-      margin-bottom: 1rem !important;
-    }
-
-    #selection-summary > div {
-      font-size: 0.75rem !important;
-      padding: 4px 0;
-    }
-
-    /* Stacks all buttons: Actions and Contact CTA */
     .blueprint-actions, .cta-links { 
       flex-direction: column !important; 
       gap: 0.8rem !important;
+      width: 100% !important;
     }
 
     .btn-primary, .btn-outline { 
       width: 100% !important; 
-      padding: 1rem !important;
-      font-size: 0.95rem !important;
+      display: block !important;
+      box-sizing: border-box !important;
     }
 
-    #blueprint-title { font-size: 1.4rem !important; line-height: 1.2; }
-    .advisor-hero h1 { font-size: 2rem !important; }
+    .cost-estimate { font-size: 0.8rem !important; width: 100%; box-sizing: border-box; }
   }
 
 </style>
@@ -370,23 +381,26 @@ const haWarning = (r.ha === 'yes' && r.budget !== 'high')
   ? `<div class="exp-box"><strong>Note:</strong> True high availability needs a higher budget. A backup (cold spare) setup is recommended instead.</div>`
   : "";
 
-    // Summary Bar
-    // 1. Clean Selection Summary (Replaces the Architect Log)
-    // 1. Clean Selection Summary (Compact Design)
-    const audienceMap = { home: 'Residential', business: 'Enterprise/SMB', homelab: 'R&D Homelab' };
-    const budgetMap = { low: '< $200', mid: '$200 - $600', high: '$1,000+' };
-    const densityMap = { small: '1-20 Devices', medium: '21-60 Devices', large: '61+ Devices' };
+    // 1. Lean Mobile-Ready Summary
+    const audienceMap = { home: 'Home', business: 'Business', homelab: 'Homelab' };
+    const budgetMap = { low: '<$200', mid: '$200-$600', high: '$1k+' };
+    const densityMap = { small: '1-20', medium: '21-60', large: '61+' };
 
-    // Using a simpler Grid-like layout for the summary
+    // This simplified HTML works much better with the 2-column grid CSS above
     const sumHtml = `
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; width: 100%;">
-        <div><strong style="color:var(--accent)">Env:</strong> ${audienceMap[r.audience]}</div>
-        <div><strong style="color:var(--accent)">Budget:</strong> ${budgetMap[r.budget]}</div>
-        <div><strong style="color:var(--accent)">Nodes:</strong> ${densityMap[r.density]}</div>
-        <div><strong style="color:var(--accent)">HA:</strong> ${hasHA ? 'Enabled' : 'No'}</div>
-      </div>
+      <div><strong style="color:var(--accent)">Env:</strong> ${audienceMap[r.audience]}</div>
+      <div><strong style="color:var(--accent)">Scale:</strong> ${densityMap[r.density]}</div>
+      <div><strong style="color:var(--accent)">Budget:</strong> ${budgetMap[r.budget]}</div>
+      <div><strong style="color:var(--accent)">HA:</strong> ${hasHA ? 'Yes' : 'No'}</div>
     `;
-    document.getElementById('selection-summary').innerHTML = sumHtml;
+    
+    const summaryBar = document.getElementById('selection-summary');
+    summaryBar.innerHTML = sumHtml;
+    
+    // Force reset the position so it's visible at the top
+    const shell = document.querySelector('.advisor-shell');
+    shell.style.marginTop = "1rem";
+    shell.style.padding = "1.5rem";
     
     // Style adjustments for a cleaner "Receipt" look
     const summaryBar = document.getElementById('selection-summary');
