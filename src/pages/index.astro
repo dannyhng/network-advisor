@@ -584,25 +584,78 @@ import Layout from '../layouts/Layout.astro';
   }
 
   // PDF Engine
-  window.downloadPDF = async function() {
-    const { jsPDF } = window.jspdf;
-    const el = document.getElementById('results');
-    const actionButtons = document.querySelector('.blueprint-actions');
-    if (actionButtons) actionButtons.style.opacity = '0';
-    try {
-      const canvas = await html2canvas(el, { backgroundColor: '#0f172a', scale: 2 });
-      const imgData = canvas.toDataURL('image/png');
-      const doc = new jsPDF('p', 'mm', 'a4');
-      const w = doc.internal.pageSize.getWidth();
-      const h = (doc.getImageProperties(imgData).height * w) / doc.getImageProperties(imgData).width;
-      doc.addImage(imgData, 'PNG', 0, 0, w, h);
-      doc.save(`Network-Blueprint-${Date.now()}.pdf`);
-    } catch (err) {
-      console.error("PDF Export failed:", err);
-    } finally {
-      if (actionButtons) actionButtons.style.opacity = '1';
-    }
+  window.downloadPDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const r = answers;
+  const types = r.types || [];
+
+  const audienceMap = { home: 'Home', business: 'Business', homelab: 'Homelab' };
+  const densityMap = { small: '1–20 Devices', medium: '21–60 Devices', large: '61+ Devices' };
+  const costMap = {
+    low: '$150 – $450',
+    mid: '$700 – $1,500',
+    high: '$2,500 – $4,000+'
   };
+
+  let y = 20;
+
+  // Title
+  doc.setFontSize(18);
+  doc.text('Network Architecture Report', 20, y);
+  y += 10;
+
+  // Summary
+  doc.setFontSize(11);
+  doc.text(`Environment: ${audienceMap[r.audience]}`, 20, y); y += 6;
+  doc.text(`Scale: ${densityMap[r.density]}`, 20, y); y += 6;
+  doc.text(`Budget Tier: ${r.budget}`, 20, y); y += 6;
+  doc.text(`Estimated Cost: ${costMap[r.budget]}`, 20, y); y += 10;
+
+  // Section helper
+  function section(title, content) {
+    doc.setFontSize(13);
+    doc.text(title, 20, y);
+    y += 6;
+
+    doc.setFontSize(10);
+
+    const lines = doc.splitTextToSize(content, 170);
+    doc.text(lines, 20, y);
+
+    y += lines.length * 5 + 6;
+
+    // Auto new page
+    if (y > 270) {
+      doc.addPage();
+      y = 20;
+    }
+  }
+
+  // Pull content from your UI
+  const getText = (id) =>
+    document.getElementById(id)?.innerText || '';
+
+  section('Hardware Stack', getText('res-hardware'));
+  section('Logical Topology', getText('res-routing'));
+  section('Routing Strategy', getText('res-protocol'));
+  section('Remote Access', getText('res-remote'));
+  section('Security Zones', getText('res-vlan'));
+  section('Deployment Plan', getText('res-security'));
+  section('Power & Physical Layer', getText('res-power'));
+  section('ISP & External Link', getText('res-isp'));
+
+  if (types.includes('servers') || types.includes('cameras')) {
+    section('Storage Layer', getText('res-storage'));
+  }
+
+  if (r.audience === 'homelab') {
+    section('Software Stack', getText('res-software'));
+  }
+
+  doc.save(`Network-Architecture-${Date.now()}.pdf`);
+};
 
   // Markdown Export Engine
   window.exportMarkdown = function() {
