@@ -27,14 +27,15 @@ import Layout from '../layouts/Layout.astro';
       <div id="questions-container">
         <div class="question active" data-q="0">
           <div class="q-header"><span class="q-num">START</span><h2>Design your network architecture.</h2></div>
-          <p class="q-sub">Most consumer routers aren’t designed for complex environments. Answer 5 questions to generate a structured, secure network blueprint.</p>
+          <p class="q-sub">Most consumer routers aren’t designed for segmented or high-device environments. 
+          Answer a few questions to generate a network design tailored to your setup and budget.</p>
           <div class="exp-box">
             <strong>What we’ll cover:</strong>
             <ul style="margin-top: 10px; padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
-              <li><strong>Hardware Picks:</strong> Recommendations aligned with your budget</li>
-              <li><strong>Security Zones:</strong> Segmentation strategies for IoT and guest systems</li>
-              <li><strong>L3 Routing & VPN:</strong> Practical routing design and remote access</li>
-              <li><strong>Setup Guide:</strong> A step-by-step implementation roadmap</li>
+              <li><strong>Hardware Selection:</strong> Gear matched to your budget and requirements</li>
+              <li><strong>Network Segmentation:</strong> Segmentation strategies for IoT and guest systems</li>
+              <li><strong>Routing & VPN:</strong> Practical routing design and remote access</li>
+              <li><strong>Deployment Plan:</strong> Step-by-step implementation approach</li>
             </ul>
           </div>
           <button class="next-btn" onclick="nextQuestion()" style="margin-top: 2rem;">Start the Assessment →</button>
@@ -59,13 +60,13 @@ import Layout from '../layouts/Layout.astro';
           <div class="q-header"><span class="q-num">02</span><h2>Hardware Budget</h2></div>
           <div class="options-grid">
             <button class="option-card" data-key="budget" data-val="low" onclick="select(this)">
-              <div class="card-title">Budget (&lt;$200)</div><p>Refurbished enterprise gear or consumer hardware.</p>
+              <div class="card-title">Budget (&lt;$200)</div><p>Entry-level or repurposed hardware suitable for small segmented networks</p>
             </button>
             <button class="option-card" data-key="budget" data-val="mid" onclick="select(this)">
-              <div class="card-title">Mid-Tier ($200-$600)</div><p>Prosumer SDN gear (Ubiquiti, MikroTik).</p>
+              <div class="card-title">Mid-Tier ($200-$600)</div><p>Prosumer gear with VLAN support and centralized management</p>
             </button>
             <button class="option-card" data-key="budget" data-val="high" onclick="select(this)">
-              <div class="card-title">Enterprise ($1000+)</div><p>High-end Netgate or Cisco infrastructure.</p>
+              <div class="card-title">Enterprise ($1000+)</div><p>Enterprise-grade routing, switching, and scalable infrastructure</p>
             </button>
           </div>
         </div>
@@ -92,10 +93,11 @@ import Layout from '../layouts/Layout.astro';
         </div>
 
         <div class="question" data-q="5">
-          <div class="q-header"><span class="q-num">05</span><h2>High Availability</h2></div>
+          <div class="q-header"><span class="q-num">05</span><h2>High Availability Strategy</h2></div>
+          <p class="q-sub">Define the desired level of uptime and failure tolerance for this network.</p>
           <div class="options-grid">
             <button class="option-card" data-key="ha" data-val="yes" onclick="select(this)">
-              <div class="card-title">Redundant</div><p>Dual hardware for 99.9% uptime.</p>
+              <div class="card-title">Redundant</div><p>Redundant hardware paths to minimize downtime during failures.</p>
             </button>
             <button class="option-card" data-key="ha" data-val="no" onclick="select(this)">
               <div class="card-title">Standard</div><p>Single path is acceptable for this site.</p>
@@ -103,10 +105,37 @@ import Layout from '../layouts/Layout.astro';
           </div>
         </div>
 
-        <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-          <button id="prev-btn" onclick="prevQuestion()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; visibility:hidden; font-weight: 600;">← Previous Step</button>
-        </div>
+      <div class="question" data-q="6">
+    <div class="q-header"><span class="q-num">06</span><h2>Power Protection Strategy</h2></div>
+    <p class="q-sub">How should the infrastructure handle power loss or electrical instability?</p>
+    <div class="options-grid">
+      <button class="option-card" data-key="power" data-val="ups" onclick="select(this)">
+        <div class="card-title">Battery Backup (UPS)</div><p>Keeps critical systems running during outages and protects against power instability.</p>
+      </button>
+      <button class="option-card" data-key="power" data-val="standard" onclick="select(this)">
+        <div class="card-title">Surge Protection</div><p>Basic protection against spikes; system hard-reboots during outages.</p>
+      </button>
+    </div>
+  </div>
+
+    <div class="question" data-q="7">
+      <div class="q-header"><span class="q-num">07</span><h2>Backup Strategy</h2></div>
+      <p class="q-sub">Define your data protection and recovery requirements.</p>
+      <div class="options-grid">
+        <button class="option-card" data-key="backup" data-val="hybrid" onclick="select(this)">
+          <div class="card-title">Hybrid (3-2-1 Rule)</div><p>Local NAS with encrypted cloud backup for redundancy and recovery.</p>
+        </button>
+        <button class="option-card" data-key="backup" data-val="local" onclick="select(this)">
+          <div class="card-title">Local Only</div><p>On-site backup to a NAS or external drive only.</p>
+        </button>
       </div>
+    </div>
+
+    <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+      <button id="prev-btn" onclick="prevQuestion()" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; visibility:hidden; font-weight: 600;">← Previous Step</button>
+    </div>
+
+  </div>
 
       <div id="results" class="results-container" style="display:none">
         <div id="selection-summary"></div>
@@ -124,6 +153,8 @@ import Layout from '../layouts/Layout.astro';
           <div class="blueprint-card"><h3>Remote Access</h3><div id="res-remote" class="res-content"></div></div>
           <div class="blueprint-card"><h3>Security Zones</h3><div id="res-vlan" class="res-content"></div></div>
           <div class="blueprint-card"><h3>Deployment Roadmap</h3><div id="res-security" class="res-content"></div></div>
+          <div class="blueprint-card" id="power-card"><h3>Physical & Power Layer</h3><div id="res-power" class="res-content"></div></div>
+          <div class="blueprint-card" id="isp-card"><h3>ISP & External Link</h3><div id="res-isp" class="res-content"></div></div>
           <div class="blueprint-card" id="storage-card" style="display:none"><h3>Storage Layer</h3><div id="res-storage" class="res-content"></div></div>
 		  <div class="blueprint-card" id="software-card" style="display:none"><h3>Software Stack</h3><div id="res-software" class="res-content"></div></div>
           <div class="blueprint-card" id="logic-card" style="grid-column: 1 / -1; border-top: 2px solid var(--accent); margin-top: 1rem;">
@@ -160,6 +191,8 @@ import Layout from '../layouts/Layout.astro';
   .nav-container { max-width: 1100px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem; }
   .nav-logo { font-weight: 800; font-size: 1.2rem; text-decoration: none; color: white; letter-spacing: -1px; }
   .dot { color: var(--accent); }
+  .console { color: var(--accent); animation: blink 1s infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
   .nav-btn { border: 1px solid var(--accent); color: var(--accent) !important; padding: 0.4rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.85rem; }
 
   .advisor-hero { text-align: center; min-height: 45vh; display: flex; flex-direction: column; justify-content: center; padding: 4rem 1.5rem 8rem; }
@@ -222,7 +255,7 @@ import Layout from '../layouts/Layout.astro';
   const answers = {};
   const multiSelections = new Set();
   let currentQ = 0;
-  const totalQ = 5;
+  const totalQ = 7;
 
   const saved = localStorage.getItem('networkBlueprint');
 	if (saved) {
@@ -337,7 +370,8 @@ import Layout from '../layouts/Layout.astro';
         <div><strong style="color:var(--accent)">Env:</strong> ${audienceMap[r.audience]}</div>
         <div><strong style="color:var(--accent)">Scale:</strong> ${densityMap[r.density]}</div>
         <div><strong style="color:var(--accent)">Budget:</strong> ${budgetMap[r.budget]}</div>
-        <div><strong style="color:var(--accent)">HA:</strong> ${hasHA ? 'Enabled' : 'No'}</div>
+        <div><strong style="color:var(--accent)">HA:</strong> ${hasHA ? 'Yes' : 'No'}</div>
+        <div><strong style="color:var(--accent)">Power:</strong> ${r.power === 'ups' ? 'UPS' : 'Surge'}</div>
       </div>`;
     summaryBar.style.border = "1px solid var(--border)";
     summaryBar.style.background = "rgba(16, 185, 129, 0.03)";
@@ -351,7 +385,7 @@ import Layout from '../layouts/Layout.astro';
         
         <div style="flex: 1 1 300px;">
             <div style="font-size:0.85rem; color:var(--accent); letter-spacing:1px; text-transform:uppercase; font-weight:700; margin-bottom:0.5rem;">
-                Architecture Profile
+                Architecture Summary
             </div>
             <h2 style="margin:0 0 0.5rem 0; font-size: 2rem; line-height: 1.2;">
                 ${audienceMap[r.audience]} Network Design
@@ -406,6 +440,23 @@ import Layout from '../layouts/Layout.astro';
 		</div>
 	`;
 
+    // 6. NEW: Physical & Power Logic
+    let powerHw = r.power === 'ups' ? 'APC Smart-UPS 1500VA' : 'CyberPower Surge Protector';
+    let rackHw = r.audience === 'home' ? 'StarTech 6U Wall Mount' : '12U Open Frame Server Rack';
+    
+    document.getElementById('res-power').innerHTML = `
+      <strong>Rack:</strong> ${rackHw}<br/>
+      <strong>Power:</strong> ${powerHw}<br/>
+      <div class="exp-box"><strong>Architect's Tip:</strong> For ${audienceMap[r.audience]} builds, we spec a rack to manage airflow and heat dissipation for high-density gear.</div>
+    `;
+
+    // 7. NEW: ISP & External Link Logic
+    document.getElementById('res-isp').innerHTML = `
+      <strong>Modem Config:</strong> Bridge Mode / IP Passthrough<br/>
+      <strong>DNS Provider:</strong> Quad9 (9.9.9.9) or Cloudflare (1.1.1.1)<br/>
+      <div class="exp-box"><strong>Critical Step:</strong> Putting your ISP modem into Bridge Mode avoids <strong>Double NAT</strong>, which is vital for VPN stability.</div>
+    `;
+
     // 6. Topology Logic
     const haWarning = (r.ha === 'yes' && r.budget !== 'high') ? `<div class="exp-box"><strong>Note:</strong> True high availability needs a higher budget. A backup (cold spare) setup is recommended instead.</div>` : "";
     document.getElementById('res-routing').innerHTML = `${haWarning}
@@ -456,10 +507,10 @@ import Layout from '../layouts/Layout.astro';
     // 10. Roadmap
     document.getElementById('res-security').innerHTML = `
       <div class="roadmap-list" style="margin-top:0.5rem">
-        <div style="margin-bottom:10px"><strong>01:</strong> Hardware validation & cable management.</div>
-        <div style="margin-bottom:10px"><strong>02:</strong> VLAN Database & Trunk provisioning.</div>
+        <div style="margin-bottom:10px"><strong>01:</strong> Physical validation, Rack mounting & UPS setup.</div>
+        <div style="margin-bottom:10px"><strong>02:</strong> ISP Bridge Mode & VLAN provisioning.</div>
         <div style="margin-bottom:10px"><strong>03:</strong> Default-Deny Security Policy rollout.</div>
-        <div style="margin-bottom:10px"><strong>04:</strong> Post-deployment vulnerability audit (Nmap).</div>
+        <div style="margin-bottom:10px"><strong>04:</strong> <strong>Day 2 Ops:</strong> Deploy Monitoring (Zabbix/Syslog) for log retention.</div>
       </div>`;
 
     // 11. Storage Layer
@@ -501,7 +552,7 @@ import Layout from '../layouts/Layout.astro';
 			<h4 style="color:var(--accent); margin-bottom:10px;">Isolation Strategy</h4>
 			<p>
 			Untrusted devices (IoT, guest, etc.) are segmented into separate VLANs with a default-deny policy.
-			This prevents lateral movement if one device is compromised.
+			This prevents lateral movement in the event of a device compromise.
 			</p>
 			<div class="exp-box">
 			<strong>Tradeoff:</strong> More segmentation = more firewall rules to manage.
